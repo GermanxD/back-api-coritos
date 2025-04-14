@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as bodyParser from 'body-parser'; // Agregar body-parser
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,9 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, documentFactory);
 
   app.setGlobalPrefix("api");
+
+  app.use(bodyParser.json({ limit: '5mb' }));
+
   await app.listen(3000);
 }
 bootstrap();

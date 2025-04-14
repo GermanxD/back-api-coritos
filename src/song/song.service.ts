@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class SongService {
+  [x: string]: any;
   constructor(
     @InjectRepository(Song)
     private _songRepository: Repository<Song>
@@ -16,7 +17,7 @@ export class SongService {
   async create(createSongDto: CreateSongDto) {
 
     try{
-      const { verses, ...songData } = createSongDto;
+      const { verses, chorus, ...songData } = createSongDto;
 
       const nextId = await this._songRepository.maximum('number');
       
@@ -28,10 +29,10 @@ export class SongService {
         console.log("Si hay canciones en el sistema");
       }
   
-      const song = this._songRepository.create(songData);
+      const song = this._songRepository.create({...songData,chorus,});
       song.verses = verses.map((text) => {
         const verse = new Verse();
-        verse.text = text;
+        verse.text = text.text;
         return verse;
       });
       return await this._songRepository.save(song);
@@ -60,7 +61,7 @@ export class SongService {
   async findByTypeCoro(type_coro: number) {
 
     try {
-      const res = await this._songRepository.find({ where: { type_coro }, relations: ['verses'] });
+      const res = await this._songRepository.find({ where: { typeCoro: type_coro as any }, relations: ['verses'] });
   
     if (!res.length) {
       const result = {message: "No hay canciones con el tipo de coro especificado", status: 404};
@@ -79,4 +80,9 @@ export class SongService {
     }    
   }
 
+  async createBulk(createSongsDto: CreateSongDto[]) {
+    return await this._songRepository.save(createSongsDto);
+  }
+  
+  
 }

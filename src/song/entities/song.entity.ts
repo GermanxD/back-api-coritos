@@ -6,18 +6,18 @@ export class Song {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int', width: 2 })
+  @Column()
+  title: string;
+
+  @Column()
   number: number;
 
-  @Column({ type: 'varchar', length: 255 })
-  title: string;
+  @Column({ nullable: true })
+  typeCoro: number;
+
+  @Column({ nullable: true, type: 'text' })
+  chorus?: string;
 
   @OneToMany(() => Verse, (verse) => verse.song, { cascade: true })
   verses: Verse[];
-
-  @Column({ type: 'int', width: 2, nullable: true })
-  type_coro: number;
-
-  @Column({ type: 'int', width: 2, default: 1 })
-  status: number;
 }

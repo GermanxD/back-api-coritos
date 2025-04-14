@@ -1,8 +1,27 @@
+import { Type } from 'class-transformer';
+import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+
+class CreateVerseDto {
+  @IsString()
+  text: string;
+}
+
 export class CreateSongDto {
-    number: number;
-    title: string;
-    verses: string[];
-    chorus?: string;
-    type_coro: number;
-    status: number;
-  }
+  @IsNumber()
+  id: number;
+
+  @IsNumber()
+  number: number;
+
+  @IsString()
+  title: string;
+
+  @IsOptional()
+  @IsString()
+  chorus?: string | null;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateVerseDto)
+  verses: CreateVerseDto[];
+}
