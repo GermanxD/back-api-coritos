@@ -15,7 +15,7 @@ import { SongModule } from './song/song.module';
       password: '',
       database: 'coritos_db',
       entities: ["dist/**/*.entity{.ts,.js}"],
-      synchronize: true, 
+      synchronize: true,  
     }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
