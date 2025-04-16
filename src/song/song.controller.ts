@@ -6,6 +6,11 @@ import { CreateSongDto } from './dto/create-song.dto';
 export class SongController {
   constructor(private readonly songService: SongService) {}
 
+  @Get('hola')
+  getHola(): string {
+    return 'Hola';
+  }
+
   @Post()
   async create(@Body() createSongDto: CreateSongDto) {
     return this.songService.create(createSongDto);
