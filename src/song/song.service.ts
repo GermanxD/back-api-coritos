@@ -81,26 +81,7 @@ export class SongService {
   }
 
   async createBulk(createSongsDto: CreateSongDto[]) {
-    console.log('Iniciando la inserción en lotes...');
-    
-    const chunkSize = 500; // Puedes ajustar el tamaño según sea necesario
-    const chunks = [];
-    
-    // Dividir los datos en lotes
-    for (let i = 0; i < createSongsDto.length; i += chunkSize) {
-      chunks.push(createSongsDto.slice(i, i + chunkSize));
-    }
-    
-    console.log(`Se dividieron los datos en ${chunks.length} lotes.`);
-    
-    // Comenzar la inserción en lotes
-    for (const chunk of chunks) {
-      console.log(`Insertando lote de ${chunk.length} canciones...`);
-      await this._songRepository.save(chunk);
-    }
-    
-    console.log('Inserción completada.');
-    return { message: 'Songs inserted successfully' };
+    return await this._songRepository.save(createSongsDto);
   }
   
   
