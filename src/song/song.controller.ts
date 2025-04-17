@@ -15,7 +15,7 @@ export class SongController {
   async create(@Body() createSongDto: CreateSongDto) {
     return this.songService.create(createSongDto);
   }
-
+  
   @Get('type/:type_coro')
   async findByTypeCoro(@Param('type_coro') type_coro: number) {
     return await this.songService.findByTypeCoro(type_coro);
@@ -35,10 +35,13 @@ export class SongController {
       throw error;
     }
   }
-
+  
   @Get('updates')
-  async getUpdatedSongs(@Query('since') since: string) {
-    const date = new Date(since);
-    return this.songService.findUpdatedSince(date);
+  getUpdatedSongs(@Query('since') since: string) {
+    return this.songService.findUpdatedSince(new Date(since));
   }
+
+}
+export class Song {
+  typeCoro: number;
 }
