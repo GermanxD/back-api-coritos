@@ -18,7 +18,7 @@ import { SongModule } from './song/song.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: ["dist/**/*.entity{.ts,.js}"],
+      entities: [__dirname + '/**/*.entity.js'],
       synchronize: false, // No uses true en producción
     }),
     JwtModule.register({
