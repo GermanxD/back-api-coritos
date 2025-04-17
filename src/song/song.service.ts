@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
-import { MoreThan, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Song } from './entities/song.entity';
 import { Verse } from './entities/verse.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -81,14 +81,26 @@ export class SongService {
   }
 
   async createBulk(createSongsDto: CreateSongDto[]) {
-    return await this._songRepository.save(createSongsDto);
-  }
-
-  async findUpdatedSince(since: Date): Promise<Song[]> {
-    return this.songRepository.find({
-      where: { updatedAt: MoreThan(since) },
-      order: { updatedAt: 'ASC' },
-    });
+    console.log('Iniciando la inserción en lotes...');
+    
+    const chunkSize = 500; // Puedes ajustar el tamaño según sea necesario
+    const chunks = [];
+    
+    // Dividir los datos en lotes
+    for (let i = 0; i < createSongsDto.length; i += chunkSize) {
+      chunks.push(createSongsDto.slice(i, i + chunkSize));
+    }
+    
+    console.log(`Se dividieron los datos en ${chunks.length} lotes.`);
+    
+    // Comenzar la inserción en lotes
+    for (const chunk of chunks) {
+      console.log(`Insertando lote de ${chunk.length} canciones...`);
+      await this._songRepository.save(chunk);
+    }
+    
+    console.log('Inserción completada.');
+    return { message: 'Songs inserted successfully' };
   }
   
   
