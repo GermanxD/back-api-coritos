@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { SongService } from './song.service';
 import { CreateSongDto } from './dto/create-song.dto';
 
@@ -36,6 +36,11 @@ export class SongController {
     }
   }
   
+  @Get('updates')
+  getUpdatedSongs(@Query('since') since: string) {
+    return this.songService.findUpdatedSince(new Date(since));
+  }
+
 }
 export class Song {
   typeCoro: number;

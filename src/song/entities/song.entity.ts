@@ -1,11 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, UpdateDateColumn } from 'typeorm';
 import { Verse } from './verse.entity';
 
 @Entity()
 export class Song {
-  @PrimaryGeneratedColumn()
-  id: number;
 
+  @PrimaryGeneratedColumn()
   @Column()
   title: string;
 
@@ -20,4 +19,7 @@ export class Song {
 
   @OneToMany(() => Verse, (verse) => verse.song, { cascade: true })
   verses: Verse[];
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
