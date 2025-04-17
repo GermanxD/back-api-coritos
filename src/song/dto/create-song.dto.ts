@@ -8,9 +8,6 @@ class CreateVerseDto {
 
 export class CreateSongDto {
   @IsNumber()
-  id: number;
-
-  @IsNumber()
   number: number;
 
   @IsString()
